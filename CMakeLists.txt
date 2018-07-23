@@ -12,6 +12,9 @@ ELSE()
     MESSAGE(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 ENDIF()
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(MacroInstallLib)
+
 FIND_PACKAGE(Armadillo 5.4 REQUIRED)
 SET(CMAKE_MAJOR_VERSION 1)
 SET(CMAKE_MINOR_VERSION 0)
@@ -20,7 +23,7 @@ SET(CMAKE_PATCH_VERSION 0)
 INCLUDE_DIRECTORIES(include)
 INCLUDE_DIRECTORIES(${ARMADILLO_INCLUDE_DIRS})
 
-ADD_LIBRARY(pbd
+ADD_LIBRARY(pbd SHARED
 		src/datapoints.cpp
 		src/demonstration.cpp
 		src/tpdemonstration.cpp
@@ -64,4 +67,7 @@ FILE(GLOB headers ${CMAKE_CURRENT_SOURCE_DIR}/include/pbdlib/*.h)
 
 INSTALL(TARGETS pbd DESTINATION ${ROOT_INSTALL_LIBDIR})	
 INSTALL(FILES ${headers} DESTINATION ${ROOT_INSTALL_INCLUDEDIR}/pbdlib/)
+
+library_install(pbd 1 0 0)
+
 
